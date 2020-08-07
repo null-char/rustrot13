@@ -88,17 +88,13 @@ mod tests {
       Ok(file) => {
         let buf = BufReader::new(file);
         let results = buf.bytes().collect::<Vec<Result<u8, Error>>>();
-        let mut bytes_vec: Vec<u8> = vec![];
-
-        for byte in results {
-          match byte {
-            Ok(b) => bytes_vec.push(b),
-            Err(err) => panic!(
-              "Couldn't read all the bytes from encrypted file due to err: {:?}",
-              err
-            ),
-          }
-        }
+        let bytes_vec: Vec<u8> = results
+          .into_iter()
+          .map(|b| match b {
+            Ok(b) => return b,
+            Err(err) => panic!("Error mapping results: {:?}", err),
+          })
+          .collect();
 
         let result_str = String::from_utf8(bytes_vec).unwrap();
         assert_eq!(result_str, String::from("Uryy|9 d|!yq"));
