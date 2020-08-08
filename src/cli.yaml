@@ -24,6 +24,6 @@ subcommands:
         - filename:
             short: f
             long: filename
-            value_name: FILE_NAME
+            value_name: FILENAME
             takes_value: true
             help: The name of the encrypted file without extension.
