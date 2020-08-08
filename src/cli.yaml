@@ -17,7 +17,7 @@ subcommands:
             help: Path to the file you'd like to encrypt
         - outdir:
             short: o
-            long: out_dir
+            long: outdir
             value_name: DIR_TO_OUT
             takes_value: true
             help: Specifies the directory to which the encrypted file should be written to.
@@ -26,4 +26,4 @@ subcommands:
             long: filename
             value_name: FILENAME
             takes_value: true
-            help: The name of the encrypted file without extension.
+            help: The name of the encrypted file without a file extension.
