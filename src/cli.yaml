@@ -12,6 +12,7 @@ subcommands:
             short: p
             long: path
             value_name: PATH_TO_FILE
+            index: 1
             required: true
             takes_value: true
             help: Path to the file you'd like to encrypt
