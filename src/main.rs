@@ -14,7 +14,7 @@ fn main() {
   if let Some(matches) = matches.subcommand_matches("encrypt") {
     // We can safely unwrap here because path is a required argument.
     let path_str = matches.value_of("path").unwrap();
-    let outdir = matches.value_of("out_dir").unwrap_or("");
+    let outdir = matches.value_of("outdir").unwrap_or("");
     let filename = matches.value_of("filename");
     let path = Path::new(path_str);
 
