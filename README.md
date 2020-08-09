@@ -2,7 +2,7 @@
 ROT13 file encryption using Rust.
 
 ## Disclaimer
-In case it isn't obvious already, ROT13 file encryption is basically equivalent to showing the answers to a quiz upside down meaning this
+In case it isn't obvious already, ROT13 file encryption is basically equivalent to showing the answers to a quiz upside down as it
 provides virtually no cryptographic security. This is a CLI application that I'm working on to learn more about Rust.
 The code is extremely basic and is mostly just file I/O.
 
