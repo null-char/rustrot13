@@ -1,13 +1,14 @@
-use super::utils::get_extension;
+use super::{
+  constants::{MAX, MIN},
+  traits::ByteRotator,
+  utils::get_extension,
+};
 use std::fs::File;
 use std::io::{BufReader, Read, Write};
 use std::path::Path;
 
-pub const MAX: u8 = 126;
-pub const MIN: u8 = 33;
-
-// FileEncoder has fields for a path (to a file) and rot_by which signifies by how many bytes
-// it should shift each original byte.
+/// FileEncoder has fields for a path (to a file) and rot_by which signifies by how many bytes
+/// it should shift each original byte.
 pub struct FileEncryptor<'p> {
   // Path to a file.
   pub path: &'p Path,
@@ -36,7 +37,7 @@ impl<'p> FileEncryptor<'p> {
   /// let path = Path::new("test.txt");
   /// let file_encryptor = FileEncryptor::new(path, 13);
   /// // Outputs the file to a relative path.
-  /// file_encryptor.encrypt_file("../", "rot13");
+  /// file_encryptor.encrypt_file("../", Some("rot13"));
   /// assert!(Path::new("../rot13.txt").is_valid());
   /// ```
   pub fn encrypt_file(&self, outdir: &str, filename: Option<&str>) {
@@ -52,11 +53,10 @@ impl<'p> FileEncryptor<'p> {
         }
 
         let outpath = format!("{}{}.{}", outdir, filename, get_extension(self.path));
-        // shadow filename into a string slice because we'll be moving it around.
+        // shadow outpath into a string slice because we'll be moving it around.
         let outpath = outpath.as_str();
         let new_file = File::create(outpath);
         match new_file {
-          // Borrow as mutable since we'll be writing to it.
           Ok(mut file) => {
             let buf = bytes_vec.as_slice();
 
@@ -71,8 +71,10 @@ impl<'p> FileEncryptor<'p> {
       Err(e) => println!("error: {:?}", e),
     }
   }
+}
 
-  // Takes in a byte and rotates it by self.rot_by.
+impl ByteRotator for FileEncryptor<'_> {
+  /// Takes in a byte and rotates it by self.rot_by.
   fn rotate_byte(&self, b: u8) -> u8 {
     if (self.min..(self.max + 1)).contains(&b) {
       let mut rotated_byte = b + self.rot_by;
