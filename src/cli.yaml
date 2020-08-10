@@ -4,8 +4,8 @@ author: null-char <skp.frl@gmail.com>
 about: Use ROT13 to encrypt and decrypt your files. Just keep in mind that ROT13 encryption provides no cryptographic security and hence you should treat this as a toy.
 subcommands:
   - encrypt:
-      about: encrypt a file using ROT13
-      version: "0.1"
+      about: encrypt a file using ROT13 (I guess you could also use this for decryption haha)
+      version: "1.0"
       author: null-char <skp.frl@gmail.com>
       args:
         - path:
@@ -28,3 +28,29 @@ subcommands:
             value_name: FILENAME
             takes_value: true
             help: The name of the encrypted file without a file extension.
+
+  - decrypt:
+      about: decrypt a file encrypted by ROT13 (I guess you could also use this for encryption haha)
+      version: "1.0"
+      author: null-char <skp.frl@gmail.com>
+      args:
+        - path:
+            short: p
+            long: path
+            value_name: PATH_TO_FILE
+            index: 1
+            required: true
+            takes_value: true
+            help: Path to the file you'd like to decrypt
+        - outdir:
+            short: o
+            long: outdir
+            value_name: DIR_TO_OUT
+            takes_value: true
+            help: Specifies the directory to which the decrypted file should be written to.
+        - filename:
+            short: f
+            long: filename
+            value_name: FILENAME
+            takes_value: true
+            help: The name of the decrypted file without a file extension.
