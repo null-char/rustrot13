@@ -1,7 +1,7 @@
 use super::{
   constants::{MAX, MIN},
   traits::ByteRotator,
-  utils::get_extension,
+  utils::parse_to_path,
 };
 use std::fs::File;
 use std::io::{BufReader, Read, Write};
@@ -52,8 +52,7 @@ impl<'p> FileEncryptor<'p> {
           bytes_vec.push(self.rotate_byte(b.unwrap()));
         }
 
-        let outpath = format!("{}{}.{}", outdir, filename, get_extension(self.path));
-        // shadow outpath into a string slice because we'll be moving it around.
+        let outpath = parse_to_path(outdir, filename, self.path);
         let outpath = outpath.as_str();
         let new_file = File::create(outpath);
         match new_file {
@@ -79,7 +78,7 @@ impl ByteRotator for FileEncryptor<'_> {
     if (self.min..(self.max + 1)).contains(&b) {
       let mut rotated_byte = b + self.rot_by;
 
-      // We want to wrap to the beginning if the rotated byte overflows our max
+      // We should wrap to the beginning if the rotated byte overflows our max
       if rotated_byte > self.max {
         rotated_byte = (rotated_byte - self.max) + (self.min - 1);
       }
@@ -93,15 +92,15 @@ impl ByteRotator for FileEncryptor<'_> {
 
 #[cfg(test)]
 mod tests {
-  use super::*;
+  // That's a lot of supers
+  use super::{super::constants::ROT_BY, *};
   use std::fs::File;
   use std::io::{BufReader, Error, Read};
   use std::path::Path;
 
   #[test]
   fn it_encrypts_file() {
-    const ROT_BY: u8 = 13;
-    let fe = FileEncryptor::new(Path::new("test.txt"), ROT_BY);
+    let fe = FileEncryptor::new(Path::new("test1.txt"), ROT_BY);
     fe.encrypt_file("", None);
 
     match File::open("encrypted.txt") {
@@ -117,7 +116,10 @@ mod tests {
           .collect();
 
         let result_str = String::from_utf8(bytes_vec).unwrap();
-        assert_eq!(result_str, String::from("Uryy|9 d|!yq"));
+        assert_eq!(
+          result_str,
+          String::from("auv\" v\" s|! #ur r{p!(}#v|{ #r\"#;")
+        );
       }
       Err(_) => panic!("Failed to open encrypted file"),
     }
