@@ -13,5 +13,11 @@ The binary can be found in target/release. Try executing the app with --help in 
 Another alternative is to simply run main.rs directly using cargo: ```cargo run```  
   
 ### Encryption
-Currently, only encryption is supported. Simply run the command `rot13 encrypt [OPTIONS] <PATH_TO_FILE>` to encrypt something using ROT13. For help on the encrypt
-subcommand you can run `rot13 encrypt --help`.
+For "encrypting" a file (really just rotating a bytes by +13), simply run the command `rot13 encrypt [OPTIONS] <PATH_TO_FILE>` to encrypt something using ROT13. For help on the encrypt subcommand you can run `rot13 encrypt --help`.
+
+## Decryption
+This is pretty much similar to encryption except the bytes are rotated by -13. Simply run the command `rot13 decrypt [OPTIONS] <PATH_TO_FILE>` to decrypt something using
+ROT13. For help on the decrypt subcommand you can run `rot13 decrypt --help`.
+
+## Notes
+In the future, I also plan on implementing some form of Caesar cipher encryption method as well.
