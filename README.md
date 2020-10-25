@@ -20,4 +20,4 @@ This is pretty much similar to encryption except the bytes are rotated by -13. S
 ROT13. For help on the decrypt subcommand you can run `rot13 decrypt --help`.
 
 ## Notes
-In the future, I plan on turning this into just a staight up Caeser cipher instead of just restricting the shift to 13.
+In the future, I plan on turning this into just a straight up Caeser cipher instead of just restricting the shift to 13.
