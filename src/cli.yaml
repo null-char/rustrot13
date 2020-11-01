@@ -4,7 +4,7 @@ author: null-char <skp.frl@gmail.com>
 about: Use ROT13 to encrypt and decrypt your files. Just keep in mind that ROT13 encryption provides no cryptographic security and hence you should treat this as a toy.
 subcommands:
   - encrypt:
-      about: encrypt a file using ROT13 (I guess you could also use this for decryption haha)
+      about: encrypt a file using a Caeser Cipher
       version: "1.0"
       author: null-char <skp.frl@gmail.com>
       args:
@@ -15,7 +15,15 @@ subcommands:
             index: 1
             required: true
             takes_value: true
-            help: Path to the file you'd like to encrypt
+            help: Path to the file you'd like to encrypt.
+        - shift:
+            short: s
+            long: shift
+            value_name: SHIFT,
+            required: false
+            takes_value: true
+            help: "Key to be used for encryption. Range: [0, 255] (Inclusive)"
+            default_value: "13"
         - outdir:
             short: o
             long: outdir
@@ -30,7 +38,7 @@ subcommands:
             help: The name of the encrypted file without a file extension.
 
   - decrypt:
-      about: decrypt a file encrypted by ROT13 (I guess you could also use this for encryption haha)
+      about: decrypt a file encrypted by a Caeser Cipher provided that the given shift is accurate.
       version: "1.0"
       author: null-char <skp.frl@gmail.com>
       args:
@@ -41,7 +49,14 @@ subcommands:
             index: 1
             required: true
             takes_value: true
-            help: Path to the file you'd like to decrypt
+            help: "Path to the file you'd like to decrypt. Range: [0, 255] (Inclusive)"
+        - shift:
+            short: s
+            long: shift
+            value_name: SHIFT,
+            required: true
+            takes_value: true
+            help: Key to be used for decryption.
         - outdir:
             short: o
             long: outdir
