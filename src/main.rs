@@ -1,6 +1,6 @@
 mod rot;
 use clap::{load_yaml, App, ArgMatches};
-use rot::{constants::ROT_BY, decryptor::FileDecryptor, encryptor::FileEncryptor};
+use rot::{decryptor::FileDecryptor, encryptor::FileEncryptor};
 use std::path::Path;
 
 fn main() {
@@ -12,16 +12,16 @@ fn main() {
 
   // Encrypt branch
   if let Some(matches) = matches.subcommand_matches("encrypt") {
-    execute_with_args(matches, |path, outdir, filename| {
-      let file_encryptor = FileEncryptor::new(path, ROT_BY);
+    execute_with_args(matches, |path, outdir, shift, filename| {
+      let file_encryptor = FileEncryptor::new(path, shift);
       file_encryptor.encrypt_file(outdir, filename);
     });
   }
 
   // Decrypt branch
   if let Some(matches) = matches.subcommand_matches("decrypt") {
-    execute_with_args(matches, |path, outdir, filename| {
-      let file_decryptor = FileDecryptor::new(path, ROT_BY);
+    execute_with_args(matches, |path, outdir, shift, filename| {
+      let file_decryptor = FileDecryptor::new(path, shift);
       file_decryptor.decrypt_file(outdir, filename);
     })
   }
@@ -30,10 +30,22 @@ fn main() {
 // This function is really just to prevent duplicated logic in the encrypt and decrypt branch.
 fn execute_with_args<T>(matches: &ArgMatches, task: T)
 where
-  T: FnOnce(&Path, &str, Option<&str>) -> (), // Ensure the closure T can only be called once
+  T: FnOnce(&Path, &str, u8, Option<&str>) -> (), // Ensure the closure T can only be called once
 {
   // We can safely unwrap here because path is a required argument.
   let path_str = matches.value_of("path").unwrap();
+
+  // Shift validation aka how many bytes to rotate by during encryption / decryption.
+  let shift_str = matches.value_of("shift").unwrap();
+  let shift: u8;
+
+  match shift_str.parse::<u8>() {
+    Ok(res) => {
+      shift = res;
+    },
+    Err(_) => panic!("Invalid shift value provided. Perhaps you entered a negative value or a value too large. Exiting...")
+  }
+
   let outdir = matches.value_of("outdir").unwrap_or("");
   let filename = matches.value_of("filename");
   let path = Path::new(path_str);
@@ -44,5 +56,5 @@ where
   }
 
   // Finally after gathering and validating the args, we execute whatever task is appropriate.
-  task(path, outdir, filename);
+  task(path, outdir, shift, filename);
 }

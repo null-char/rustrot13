@@ -85,14 +85,14 @@ impl ByteRotator for FileDecryptor<'_> {
 
 #[cfg(test)]
 mod tests {
-  use super::{super::constants::ROT_BY, *};
+  use super::*;
   use std::fs::File;
   use std::io::{BufReader, Error, Read};
   use std::path::Path;
 
   #[test]
   fn it_decrypts_file() {
-    let fd = FileDecryptor::new(Path::new("test2.txt"), ROT_BY);
+    let fd = FileDecryptor::new(Path::new("test2.txt"), 13);
     fd.decrypt_file("", None);
 
     match File::open("decrypted.txt") {

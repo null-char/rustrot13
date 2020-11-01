@@ -93,14 +93,14 @@ impl ByteRotator for FileEncryptor<'_> {
 #[cfg(test)]
 mod tests {
   // That's a lot of supers
-  use super::{super::constants::ROT_BY, *};
+  use super::*;
   use std::fs::File;
   use std::io::{BufReader, Error, Read};
   use std::path::Path;
 
   #[test]
   fn it_encrypts_file() {
-    let fe = FileEncryptor::new(Path::new("test1.txt"), ROT_BY);
+    let fe = FileEncryptor::new(Path::new("test1.txt"), 13);
     fe.encrypt_file("", None);
 
     match File::open("encrypted.txt") {
