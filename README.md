@@ -13,11 +13,10 @@ The binary can be found in target/release. Try executing the app with --help in 
 Another alternative is to simply run main.rs directly using cargo: ```cargo run```  
   
 ### Encryption
-For "encrypting" a file (really just rotating bytes by +13), simply run the command `rot13 encrypt [OPTIONS] <PATH_TO_FILE>` to encrypt something using ROT13. For help on the encrypt subcommand you can run `rot13 encrypt --help`.
+For "encrypting" a file (really just rotating bytes by +13 or whichever key shift you provide), simply run the command `rot13 encrypt [OPTIONS] <PATH_TO_FILE>` to encrypt something using the provided shift value (by default this is 13). For help on the encrypt subcommand you can run `rot13 encrypt --help`. Additionally, if you'd like to set the shift value to something different you can do so via the `shift` argument.
 
 ## Decryption
-This is pretty much similar to encryption except the bytes are rotated by -13. Simply run the command `rot13 decrypt [OPTIONS] <PATH_TO_FILE>` to decrypt something using
-ROT13. For help on the decrypt subcommand you can run `rot13 decrypt --help`.
+This simply just involves backshifting the bytes given a key (which is the shift value). Simply run the command `rot13 decrypt [OPTIONS] <PATH_TO_FILE> <SHIFT>` to decrypt something. You'll get back something coherent as long as the key you provided is valid for that particular file. For help on the decrypt subcommand you can run `rot13 decrypt --help`.
 
-## Notes
-In the future, I plan on turning this into just a straight up Caeser cipher instead of just restricting the shift to 13.
+# Notes
+It should be noted that currently all of the bytes pertaining to ASCII codes 33 - 122 are rotated. This is hardcoded as a constant for now.
